@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Oasis Files",
   description: "Articles of Oasis",
-  icons: "/favicon.ico",
+  icons: "/favicon.png",
 };
 
 export default async function Blogs() {
