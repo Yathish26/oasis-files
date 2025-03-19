@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Oasis Files",
-  description: "Articles of Oasis",
-  icons: "/favicon.png",
+  title: "Popular Blogs",
+  description: "Latest New Articles and Popular Blog Articles from Hire Arrive",
+  icons: "/hirearrive.svg",
 };
 
 export default async function Blogs() {
