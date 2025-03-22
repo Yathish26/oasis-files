@@ -19,7 +19,7 @@ async function fetchPost(id) {
 // Generate metadata dynamically for SEO
 export async function generateMetadata({ params }) {
     const post = await fetchPost(params.id);
-    if (!post) return { title: "Post Not Found", description: "This blog post does not exist." };
+    if (!post) return { title: "Article Not Found", description: "This article does not exist." };
 
     const imageUrl = post.coverImage || `https://picsum.photos/800/400?random=${params.id}`;
     const cleanDescription = post.description.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 150) + "...";
@@ -32,13 +32,13 @@ export async function generateMetadata({ params }) {
             title: post.title,
             description: cleanDescription,
             type: "article",
-            url: `https://blogs.hirearrive.in/${params.id}`,
+            url: `https://articles.hirearrive.in/${params.id}`,
             images: [{ url: imageUrl, width: 800, height: 400, alt: post.title }],
             updated_time: new Date().toISOString(),
         },
         twitter: {
             card: "summary_large_image",
-            site: "@Hire Arrive Blogs",
+            site: "@Hire Arrive Articles",
             title: post.title,
             description: cleanDescription,
             images: [imageUrl],

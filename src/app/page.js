@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Popular Blogs",
-  description: "Latest New Articles and Popular Blog Articles from Hire Arrive",
+  title: "Popular Articles",
+  description: "Stories Near You and more",
   icons: "/hirearrive.svg",
 };
 
@@ -12,7 +12,7 @@ export default async function Blogs() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Latest Blogs</h1>
+      <h1 className="text-3xl font-bold text-blue-600 mb-6">Latest Articles</h1>
       <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-6">
         {posts.map((post) => (
           <div key={post._id} className="border-b pb-4 mb-4 last:border-none">
