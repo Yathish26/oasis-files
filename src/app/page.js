@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+const slugify = (title) =>
+  title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 export const metadata = {
   title: "Popular Articles",
   description: "Stories Near You and more",
@@ -30,7 +33,7 @@ export default async function Blogs() {
           />
           <div className="p-6">
             <h2 className="text-2xl font-bold text-blue-600 mb-2">
-              <Link href={`/${topArticle._id}`} className="hover:underline">
+              <Link href={`/${slugify(topArticle.title)}-${topArticle._id}`} className="hover:underline">
                 {topArticle.title}
               </Link>
             </h2>
@@ -55,7 +58,10 @@ export default async function Blogs() {
                 className="w-16 h-16 object-cover rounded"
               />
               <div>
-                <Link href={`/${post._id}`} className="font-semibold text-gray-800 hover:text-blue-600 text-sm line-clamp-2">
+                <Link
+                  href={`/${slugify(post.title)}-${post._id}`}
+                  className="font-semibold text-gray-800 hover:text-blue-600 text-sm line-clamp-2"
+                >
                   {post.title}
                 </Link>
                 <p className="text-xs text-gray-600 line-clamp-2">
@@ -78,7 +84,12 @@ export default async function Blogs() {
               )}
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-blue-600">
-                  <Link href={`/${post._id}`} className="hover:underline">{post.title}</Link>
+                  <Link
+                    href={`/${slugify(post.title)}-${post._id}`}
+                    className="hover:underline"
+                  >
+                    {post.title}
+                  </Link>
                 </h3>
                 <p className="text-gray-700 text-sm mt-1">
                   {post.description.replace(/<[^>]+>/g, '').slice(0, 100)}...
