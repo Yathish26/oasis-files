@@ -2,16 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import BlogContent from "./BlogContent";
 
-// 🔧 Helper to extract the actual blog ID from the slug
+// 🔧 Extract the actual blog ID from the slug (e.g., "blog-title-123abc")
 function extractId(slug) {
-  return slug.split('-').pop(); // Gets the last segment after the last "-"
+  return slug.split("-").pop();
 }
 
-// 🔄 Fetch blog post from API
+// 🔄 Fetch blog post by ID
 async function fetchPost(id) {
   const res = await fetch(`https://api.hirearrive.in/api/blogs/${id}`, {
     headers: { "x-code": "RedNote" },
-    next: { revalidate: 60 },
+    next: { revalidate: 60 }, // Optional: Revalidate every 60 seconds
   });
 
   if (!res.ok) return null;
@@ -19,8 +19,8 @@ async function fetchPost(id) {
 }
 
 // 🧠 Dynamic SEO metadata
-export async function generateMetadata({ params }) {
-  const id = extractId(params.id); // ✅ use extracted ID here
+export async function generateMetadata(props) {
+  const id = extractId(props.params.id);
   const post = await fetchPost(id);
 
   if (!post) {
@@ -30,8 +30,10 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const imageUrl = post.coverImage || `https://picsum.photos/800/400?random=${params.id}`;
-  const cleanDescription = post.description.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 150) + "...";
+  const defaultImage = "https://articles.hirearrive.in/default-cover.jpg";
+  const imageUrl = post.coverImage || defaultImage;
+  const cleanDescription =
+    post.description?.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 150) + "...";
 
   return {
     title: post.title,
@@ -40,13 +42,20 @@ export async function generateMetadata({ params }) {
       title: post.title,
       description: cleanDescription,
       type: "article",
-      url: `https://articles.hirearrive.in/${params.id}`,
-      images: [{ url: imageUrl, width: 800, height: 400, alt: post.title }],
+      url: `https://articles.hirearrive.in/${props.params.id}`,
+      images: [
+        {
+          url: imageUrl,
+          width: 800,
+          height: 400,
+          alt: post.title,
+        },
+      ],
       updated_time: new Date().toISOString(),
     },
     twitter: {
       card: "summary_large_image",
-      site: "@Hire Arrive Articles",
+      site: "@HireArrive",
       title: post.title,
       description: cleanDescription,
       images: [imageUrl],
@@ -54,13 +63,13 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// 🧾 Actual blog page
-export default async function BlogPost({ params }) {
-  const id = extractId(params.id); // ✅ use extracted ID here too
+// 🧾 Actual blog post page
+export default async function BlogPost(props) {
+  const id = extractId(props.params.id);
   const post = await fetchPost(id);
 
   if (!post) {
-    return <div className="text-center mt-10">Post not found.</div>;
+    return <div className="text-center mt-10 text-xl">Post not found.</div>;
   }
 
   return <BlogContent post={post} />;
