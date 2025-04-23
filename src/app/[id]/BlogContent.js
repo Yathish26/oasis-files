@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import AdBanner from '../components/Adbanner';
 
 export default function BlogContent({ post }) {
     const imageUrl = post.coverImage;
@@ -23,6 +24,7 @@ export default function BlogContent({ post }) {
                 {post.coverImage && <img src={imageUrl} alt={post.title} className="w-full rounded-lg mb-4" />}
 
                 <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: post.description || "" }} />
+                <AdBanner />
             </div>
         </div>
     );
