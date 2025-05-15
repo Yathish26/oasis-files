@@ -1,16 +1,21 @@
+// app/layout.js or app/layout.jsx
 import "./globals.css";
-import Head from "next/head";
+
+export const metadata = {
+  title: "HireArrive Articles",
+  description: "Explore news, blogs, and more.",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Head>
+      <head>
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3430954316376664"
           crossOrigin="anonymous"
         ></script>
-      </Head>
+      </head>
       <body className="antialiased bg-gray-100 text-gray-900">
         <main className="container mx-auto p-6">{children}</main>
       </body>

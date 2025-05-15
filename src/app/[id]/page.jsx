@@ -1,26 +1,24 @@
-import Link from "next/link";
-import Image from "next/image";
 import BlogContent from "./BlogContent";
 
-// 🔧 Extract the actual blog ID from the slug (e.g., "blog-title-123abc")
 function extractId(slug) {
-  return slug.split("-").pop();
+  const parts = slug.split("-");
+  return parts.length ? parts[parts.length - 1] : slug;
 }
 
-// 🔄 Fetch blog post by ID
+
 async function fetchPost(id) {
   const res = await fetch(`https://api.hirearrive.in/api/blogs/${id}`, {
     headers: { "x-code": "RedNote" },
-    next: { revalidate: 60 }, // Optional: Revalidate every 60 seconds
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) return null;
   return res.json();
 }
 
-// 🧠 Dynamic SEO metadata
-export async function generateMetadata(props) {
-  const id = extractId(props.params.id);
+export async function generateMetadata({ params }) {
+  const awaitedParams = await params;
+  const id = extractId(awaitedParams.id);
   const post = await fetchPost(id);
 
   if (!post) {
@@ -42,7 +40,7 @@ export async function generateMetadata(props) {
       title: post.title,
       description: cleanDescription,
       type: "article",
-      url: `https://articles.hirearrive.in/${props.params.id}`,
+      url: `https://articles.hirearrive.in/${awaitedParams.id}`,
       images: [
         {
           url: imageUrl,
@@ -63,9 +61,9 @@ export async function generateMetadata(props) {
   };
 }
 
-// 🧾 Actual blog post page
-export default async function BlogPost(props) {
-  const id = extractId(props.params.id);
+export default async function BlogPost({ params }) {
+  const awaitedParams = await params;
+  const id = extractId(awaitedParams.id);
   const post = await fetchPost(id);
 
   if (!post) {
